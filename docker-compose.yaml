@@ -1,0 +1,14 @@
+services:
+  cnetlab:
+    image: ubuntu:22.04
+    container_name: cnetlab_dev
+    volumes:
+      - .:/app
+      - ./build:/app/build
+    working_dir: /app
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["make", "all"]
