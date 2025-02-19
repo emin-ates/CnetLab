@@ -3,13 +3,26 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
     branches:
       - main
 
 jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up build environment
+        run: sudo apt update && sudo apt install -y gcc make clang-tidy
+
+      - name: Run Static Code Analysis
+        run: clang-tidy src/*.c --warnings-as-errors=*
+
   build:
+    needs: static-analysis
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
